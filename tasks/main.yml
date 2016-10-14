@@ -1,0 +1,32 @@
+---
+- name: Install Logrotate.
+  apt:
+    name: logrotate
+    state: installed
+
+- name: Generate logrotate main configuration file
+  template:
+    src: logrotate.conf.j2
+    dest: /etc/logrotate.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Ensure logrotate configuration directory
+  file:
+    path: "{{ logrotate_include_dir }}"
+    owner: root
+    group: root
+    mode: '0755'
+    state: directory
+
+- name: Generate service log rotation configuration
+  template:
+    src: service.j2
+    dest: '{{ logrotate_include_dir }}/{{ item.name }}'
+    owner: root
+    group: root
+    mode: '0644'
+    validate: logrotate -d %s
+  with_items: '{{ logrotate_service_logs }}'
+  when:  logrotate_service_logs | length > 0 and item.name | default('') and item.logs | default([]) | length > 0

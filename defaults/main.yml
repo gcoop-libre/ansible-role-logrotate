@@ -1,0 +1,53 @@
+---
+logrotate_include_dir: /etc/logrotate.d
+
+logrotate_global_frequency: weekly
+logrotate_global_rotate: 4
+logrotate_global_create: True
+logrotate_global_create_mode: ''
+logrotate_global_create_owner: ''
+logrotate_global_create_group: ''
+logrotate_global_compress: False
+logrotate_global_extra_config: []
+
+logrotate_wtmp_logs:
+  - /var/log/wtmp
+logrotate_wtmp_missingok: True
+logrotate_wtmp_frequency: monthly
+logrotate_wtmp_rotate: 1
+logrotate_wtmp_create: True
+logrotate_wtmp_create_mode: '0664'
+logrotate_wtmp_create_owner: root
+logrotate_wtmp_create_group: utmp
+logrotate_wtmp_extra_config: []
+
+logrotate_btmp_logs:
+  - /var/log/btmp
+logrotate_btmp_missingok: True
+logrotate_btmp_frequency: monthly
+logrotate_btmp_rotate: 1
+logrotate_btmp_create: True
+logrotate_btmp_create_mode: '0660'
+logrotate_btmp_create_owner: root
+logrotate_btmp_create_group: utmp
+logrotate_btmp_extra_config: []
+
+logrotate_service_logs: []
+  # Available properties
+  # - name: service_name
+  #   logs:
+  #     - /path/to/log/files
+  #   notifempty: False (default)
+  #   missingok: False (default)
+  #   frequency: '{{ logrotate_global_frequency }}' (default)
+  #   create: False (default)
+  #   create_mode: '' (default)
+  #   create_owner: '' (default)
+  #   create_group: '' (default)
+  #   rotate: '{{ logrotate_global_rotate }}' (default)
+  #   compress: False (default)
+  #   delaycompress: False (default)
+  #   sharedscripts: False (default)
+  #   prerotate: '' (default)
+  #   postrotate: '' (default)
+  #   extra_config: [] (default)

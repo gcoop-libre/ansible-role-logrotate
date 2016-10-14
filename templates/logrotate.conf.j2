@@ -1,0 +1,57 @@
+# {{ ansible_managed }}
+
+{{ logrotate_global_frequency }}
+
+rotate {{ logrotate_global_rotate }}
+
+{% if logrotate_global_create %}
+create {{ logrotate_global_create_mode }} {{ logrotate_global_create_owner }} {{ logrotate_global_create_group }}
+{% endif %}
+
+{% if logrotate_global_compress %}
+compress
+{% endif %}
+
+{% if logrotate_global_extra_config %}
+{% for extra_config in logrotate_global_extra_config %}
+{{ extra_config }}
+{% endfor %}
+{% endif %}
+
+include {{ logrotate_include_dir }}
+
+{% if logrotate_wtmp_logs %}
+{% for wtmp_log in logrotate_wtmp_logs %}{{ wtmp_log }} {% endfor %} {
+{% if logrotate_wtmp_missingok %}
+  missingok
+{% endif %}
+  {{ logrotate_wtmp_frequency }}
+{% if logrotate_wtmp_create %}
+  create {{ logrotate_wtmp_create_mode }} {{ logrotate_wtmp_create_owner }} {{ logrotate_wtmp_create_group }}
+{% endif %}
+  rotate {{ logrotate_wtmp_rotate }}
+{% if logrotate_wtmp_extra_config %}
+{% for extra_config in logrotate_wtmp_extra_config %}
+  {{ extra_config }}
+{% endfor %}
+{% endif %}
+}
+{% endif %}
+
+{% if logrotate_btmp_logs %}
+{% for btmp_log in logrotate_btmp_logs %}{{ btmp_log }} {% endfor %} {
+{% if logrotate_btmp_missingok %}
+  missingok
+{% endif %}
+  {{ logrotate_btmp_frequency }}
+{% if logrotate_btmp_create %}
+  create {{ logrotate_btmp_create_mode }} {{ logrotate_btmp_create_owner }} {{ logrotate_btmp_create_group }}
+{% endif %}
+  rotate {{ logrotate_btmp_rotate }}
+{% if logrotate_btmp_extra_config %}
+{% for extra_config in logrotate_btmp_extra_config %}
+  {{ extra_config }}
+{% endfor %}
+{% endif %}
+}
+{% endif %}
