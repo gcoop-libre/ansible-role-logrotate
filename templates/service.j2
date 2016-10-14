@@ -1,0 +1,41 @@
+# {{ ansible_managed }}
+
+{% for log in item.logs %}{{ log }} {% endfor %} {
+{% if item.missingok | default(False) %}
+  missingok
+{% endif %}
+{% if item.notifempty | default(False) %}
+  notifempty
+{% endif %}
+  {{ item.frequency | default(logrotate_global_frequency) }}
+{% if item.create | default(False) %}
+  create {{ item.create_mode | default('') }} {{ item.create_owner | default('') }} {{ item.create_group | default('') }}
+{% endif %}
+  rotate {{ item.rotate | default(logrotate_global_rotate) }}
+{% if item.compress | default(False) %}
+  compress
+{% if item.delaycompress | default(False) %}
+  delaycompress
+{% endif %}
+{% endif %}
+{% if item.prerotate | default('') or item.postrotate | default('') %}
+{% if item.sharedscripts | default(False) %}
+  sharedscripts
+{% endif %}
+{% if item.prerotate | default('') %}
+  prerotate
+    {{ item.prerotate }}
+  endscript
+{% endif %}
+{% if item.postrotate | default('') %}
+  postrotate
+    {{ item.postrotate }}
+  endscript
+{% endif %}
+{% endif %}
+{% if item.extra_config | default([]) %}
+{% for extra_config in item.extra_config %}
+  {{ extra_config }}
+{% endfor %}
+{% endif %}
+}
