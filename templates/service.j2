@@ -1,40 +1,40 @@
 # {{ ansible_managed }}
 
-{% for log in item.logs %}{{ log }} {% endfor %} {
-{% if item.missingok | default(False) %}
+{% for log in service_logs.logs %}{{ log }} {% endfor %} {
+{% if service_logs.missingok | default(False) %}
   missingok
 {% endif %}
-{% if item.notifempty | default(False) %}
+{% if service_logs.notifempty | default(False) %}
   notifempty
 {% endif %}
-  {{ item.frequency | default(logrotate_global_frequency) }}
-{% if item.create | default(False) %}
-  create {{ item.create_mode | default('') }} {{ item.create_owner | default('') }} {{ item.create_group | default('') }}
+  {{ service_logs.frequency | default(logrotate_global_frequency) }}
+{% if service_logs.create | default(False) %}
+  create {{ service_logs.create_mode | default('') }} {{ service_logs.create_owner | default('') }} {{ service_logs.create_group | default('') }}
 {% endif %}
-  rotate {{ item.rotate | default(logrotate_global_rotate) }}
-{% if item.compress | default(False) %}
+  rotate {{ service_logs.rotate | default(logrotate_global_rotate) }}
+{% if service_logs.compress | default(False) %}
   compress
-{% if item.delaycompress | default(False) %}
+{% if service_logs.delaycompress | default(False) %}
   delaycompress
 {% endif %}
 {% endif %}
-{% if item.prerotate | default('') or item.postrotate | default('') %}
-{% if item.sharedscripts | default(False) %}
+{% if service_logs.prerotate | default('') or service_logs.postrotate | default('') %}
+{% if service_logs.sharedscripts | default(False) %}
   sharedscripts
 {% endif %}
-{% if item.prerotate | default('') %}
+{% if service_logs.prerotate | default('') %}
   prerotate
-    {{ item.prerotate }}
+    {{ service_logs.prerotate }}
   endscript
 {% endif %}
-{% if item.postrotate | default('') %}
+{% if service_logs.postrotate | default('') %}
   postrotate
-    {{ item.postrotate }}
+    {{ service_logs.postrotate }}
   endscript
 {% endif %}
 {% endif %}
-{% if item.extra_config | default([]) %}
-{% for extra_config in item.extra_config %}
+{% if service_logs.extra_config | default([]) %}
+{% for extra_config in service_logs.extra_config %}
   {{ extra_config }}
 {% endfor %}
 {% endif %}

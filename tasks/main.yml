@@ -23,10 +23,13 @@
 - name: Generate service log rotation configuration
   template:
     src: service.j2
-    dest: '{{ logrotate_include_dir }}/{{ item.name }}'
+    dest: '{{ logrotate_include_dir }}/{{ service_logs.name }}'
     owner: root
     group: root
     mode: '0644'
     validate: logrotate -d %s
   with_items: '{{ logrotate_service_logs }}'
-  when:  logrotate_service_logs | length > 0 and item.name | default('') and item.logs | default([]) | length > 0
+  loop_control:
+    loop_var: service_logs
+    label: "{{ service_logs.name | default('') }}"
+  when:  logrotate_service_logs | length > 0 and service_logs.name | default('') and service_logs.logs | default([]) | length > 0
