@@ -2,7 +2,7 @@
 - name: Install Logrotate.
   apt:
     name: logrotate
-    state: installed
+    state: present
 
 - name: Generate logrotate main configuration file
   template:
